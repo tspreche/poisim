@@ -1,3 +1,5 @@
 # poisim
 
-# Poi Simulation
+Poi Simulation
+
+plays different patterns like flowers antispin.
