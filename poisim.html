@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>poisim</title>
+    <script src="jquery.min.js"></script>
+    <script src="poisim.js"></script>
+</head>
+<body style="background-color: #333333;" >
+
+<canvas id="canvas" width="600" height="600"></canvas>
+
+<div>
+    <input type="button" id="start" value="start"/>
+    <input type="button" id="stop" value="stop"/>
+    <input type="button" id="continue" value="continue"/>
+    <input type="button" id="reset" value="reset"/>
+    <br>
+    <select name="preset" class="doDrawReset" id="preset">
+        <option value=""></option>
+        <option value="Flower 4">Flower 4</option>
+        <option value="Windmill">Windmill</option>
+        <option value="Fountain">Fountain</option>
+        <option value="Hexagon">Hexagon</option>
+        <option value="Butterfly">Butterfly</option>
+        <option value="Flower 3">Flower 3</option>
+        <option value="Zens Diamant">Zens Diamant</option>
+        <option value="Flower 5">Flower 5</option>
+        <option value="6PetalFlower">6PetalFlower</option>
+        <option value="6PetalAntispin">6PetalAntispin</option>
+    </select>
+    <br>
+    Continous Paint<input id="continousPaint" class="doDrawReset" type="checkbox" checked="checked"/><br>
+    DrawReset<input id="drawReset" class="" type="checkbox" checked="checked"/><br>
+    Cord Length<input id="cordLength" class="doDrawReset" type="number" value="100"/>
+    Arm Length<input id="armLength" class="doDrawReset" type="number" value="100"/>
+    <br>
+    <br>
+    Move First Arm<input id="firstactive" class="doDrawReset" type="checkbox" checked="checked"/><br>
+    Speed Arm<input id="speedHand" class="doDrawReset" type="number" value="3"/><br>
+    Speed Poi<input id="speedPoi" class="doDrawReset" type="number" value="-4"/><br>
+    Isolation Poi<input id="isolation" class="doDrawReset" type="number" value="20"/><br>
+    <br>
+    Move Second Arm<input id="secondactive" class="doDrawReset" type="checkbox"/><br>
+    Speed Arm<input id="speed3" class="doDrawReset" type="number" value="-3"/><br>
+    Speed Poi<input id="speed4" class="doDrawReset" type="number" value="-4"/><br>
+    Isolation Poi<input id="isolation2" class="doDrawReset" type="number" value="0"/><br>
+    <br>
+    Distance:<input id="distance" class="doDrawReset" type="number" value="20"/><br>
+</div>
+
+</body>
+</html>
