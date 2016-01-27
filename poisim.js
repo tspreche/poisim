@@ -1,9 +1,8 @@
-
 var PoiSim = PoiSim || {
 
-        stopdraw : false,
+        stopdraw: false,
 
-        doInit : function () {
+        doInit: function () {
             this.c = document.getElementById('canvas').getContext('2d');
             this.stopdraw = false;
             this.configInit();
@@ -11,7 +10,7 @@ var PoiSim = PoiSim || {
             this.initTime = new Date();
         },
 
-        configInit : function () {
+        configInit: function () {
             this.config = {
                 width: 600,
                 height: 600,
@@ -20,7 +19,7 @@ var PoiSim = PoiSim || {
                 continousPaint: $('#continousPaint').prop('checked'),
                 firstactive: $('#firstactive').prop('checked'),
                 drawReset: $('#drawReset').prop('checked'),
-                preset : $('#preset').val(),
+                preset: $('#preset').val()
             };
             this.patternlist = {
                 '6PetalAntispin': {
@@ -39,11 +38,10 @@ var PoiSim = PoiSim || {
                 }
             };
 
-            if (preset !== "" && this.patternlist[preset] != undefined)
-            {
-                this.config.speedHand = this.patternlist[preset].speedHand;
-                this.config.speedPoi = this.patternlist[preset].speedHand;
-                this.config.isolation = this.patternlist[preset].isolation;
+            if (this.config.preset !== "" && this.patternlist[this.config.preset] !== undefined) {
+                this.config.speedHand = this.patternlist[this.config.preset].speedHand;
+                this.config.speedPoi = this.patternlist[this.config.preset].speedHand;
+                this.config.isolation = this.patternlist[this.config.preset].isolation;
             } else {
                 this.config.speedHand = $('#speedHand').val();
                 this.config.speedPoi = $('#speedPoi').val();
@@ -51,23 +49,19 @@ var PoiSim = PoiSim || {
             }
 
 
-
         },
 
-        doDraw : function () {
+        doDraw: function () {
             window.requestAnimationFrame($.proxy(this.draw, this));
         },
 
-        draw : function () {
+        draw: function () {
             var time = new Date();
             var diffTime = new Date(time - this.initTime);
             var rotateInTime = ((2 * Math.PI) / 60) * diffTime.getSeconds() + ((2 * Math.PI) / 60000) * diffTime.getMilliseconds();
 
 
-
             var c = this.c;
-
-
 
 
             c.save();
@@ -96,7 +90,7 @@ var PoiSim = PoiSim || {
 
 
                 //c.rotate(rotateval);
-                c.translate(0,rotateval*50);
+                c.translate(0, rotateval * 50);
 
                 c.beginPath();
                 //gravitiy center
@@ -109,7 +103,6 @@ var PoiSim = PoiSim || {
                 //rotateval2 = rotateval * $('#speed2').val();
                 var rotateval2 = rotateInTime * this.config.speedPoi;
                 c.rotate(rotateval2);
-
 
 
                 c.rotate(Math.PI);
@@ -144,8 +137,6 @@ var PoiSim = PoiSim || {
                 //c.restore();
 
 
-
-
                 c.restore();
 
                 c.restore();
@@ -155,49 +146,9 @@ var PoiSim = PoiSim || {
             c.restore();
 
 
-
-
             //refactor second
             if ($('#secondactive').prop('checked')) {
 
-                c.save();
-
-                c.translate(250 + parseInt($('#distance').val()), 250);
-
-                //mangenta hand
-                c.fillStyle = 'rgba(0,255,255,1)';
-                c.beginPath();
-                c.arc(0, 0, 5, 0, Math.PI * 2, false);
-                c.fill();
-                c.save();
-
-
-                rotateval = rotateInTime * $('#speed3').val();
-
-                c.rotate(rotateval);
-
-
-                c.beginPath();
-                c.fillRect(this.config.cordLength - 5, -5, 10, 10);
-                c.fill();
-
-                c.save();
-                c.translate(this.config.cordLength, 0);
-
-                rotateval2 = rotateval * $('#speed4').val();
-                c.rotate(rotateval2);
-
-
-                //yellow poiball
-                c.fillStyle = 'rgba(255,255,0,1)';
-                c.beginPath();
-                c.arc(config.cordLength, 0, 10, 0, Math.PI * 2, false);
-                c.fill();
-                //c.restore();
-
-
-                c.restore();
-                c.restore();
             }
 
             c.restore();
@@ -236,10 +187,10 @@ $(function () {
         ps.doInit();
     });
     $('.doDrawReset').on("change", function () {
-        if(ps.config.drawReset) {
+        if (ps.config.drawReset) {
             ps.doInit();
         }
-        else{
+        else {
             ps.configInit();
         }
     });
