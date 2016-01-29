@@ -41,17 +41,30 @@ var PoiSim = PoiSim || {
                 }
             };
 
+            var r = "r", l = "l";
+
             if (this.config.preset !== "" && this.patternlist[this.config.preset] !== undefined) {
-                this.config[r].speedHand = this.patternlist[this.config.preset][r].speedHand;
-                this.config[r].speedPoi = this.patternlist[this.config.preset][r].speedPoi;
-                this.config[r].isolation = this.patternlist[this.config.preset][r].isolation;
-                this.config[l].speedHand = this.patternlist[this.config.preset][l].speedHand;
-                this.config[l].speedPoi = this.patternlist[this.config.preset][l].speedPoi;
-                this.config[l].isolation = this.patternlist[this.config.preset][l].isolation;
+                this.config[r] = {
+                    speedHand: this.patternlist[this.config.preset][r].speedHand,
+                    speedPoi: this.patternlist[this.config.preset][r].speedPoi,
+                    isolation: this.patternlist[this.config.preset][r].isolation
+                };
+                this.config[l] = {
+                    speedHand: this.patternlist[this.config.preset][l].speedHand,
+                    speedPoi: this.patternlist[this.config.preset][l].speedPoi,
+                    isolation: this.patternlist[this.config.preset][l].isolation
+                };
             } else {
-                this.config[r].speedHand = $('#speedHand').val();
-                this.config[r].speedPoi = $('#speedPoi').val();
-                this.config[r].isolation = $('#isolation').val();
+                this.config[r] = {
+                    speedHand: $('#speedHand').val(),
+                    speedPoi: $('#speedPoi').val(),
+                    isolation: $('#isolation').val()
+                };
+                this.config[l] = {
+                    speedHand: $('#speedHand2').val(),
+                    speedPoi: $('#speedPoi2').val(),
+                    isolation: $('#isolation2').val()
+                };
             }
 
 
@@ -61,6 +74,7 @@ var PoiSim = PoiSim || {
             this.c = document.getElementById('canvas').getContext('2d');
             this.stopdraw = false;
             this.configInit();
+            this.c.fillStyle = 'rgba(0, 0, 0, 1)';
             this.c.clearRect(0, 0, this.config.width, this.config.height); // clear canvas
             this.initTime = new Date();
         },
@@ -73,10 +87,12 @@ var PoiSim = PoiSim || {
             var c = this.c;
             var time = new Date();
             var diffTime = new Date(time - this.initTime);
-            var rotateInTime = ((2 * Math.PI) / 60) * diffTime.getSeconds() + ((2 * Math.PI) / 60000) * diffTime.getMilliseconds();
+            this.rotateInTime = ((2 * Math.PI) / 60) * diffTime.getSeconds() + ((2 * Math.PI) / 60000) * diffTime.getMilliseconds();
 
             c.save();
-            c.fillStyle = 'rgba(51, 51, 51, .02)';
+
+            //trail
+            c.fillStyle = 'rgba(102, 102, 102, 0.01)';
             c.fillRect(0, 0, this.config.width, this.config.height);
 
             //go to center
@@ -85,12 +101,12 @@ var PoiSim = PoiSim || {
             if (this.config.firstactive) {
                 this.drawPoi("r");
             }
+
+
             if (this.config.secondactive) {
                 this.drawPoi("l");
             }
 
-            c.restore();
-            c.restore();
             c.restore();
 
             if (!this.stopdraw) {
@@ -99,6 +115,7 @@ var PoiSim = PoiSim || {
 
         },
 
+        //id is r = right, l = left, aka poi number
         drawPoi: function (id) {
             var c = this.c;
             //green hand or first ring if isolation
@@ -111,7 +128,7 @@ var PoiSim = PoiSim || {
             c.save();
 
 
-            var rotateval = rotateInTime * this.patternlist[][id].speedHand;
+            var rotateval = this.rotateInTime * this.config[id].speedHand;
 
 
             c.rotate(rotateval);
@@ -125,7 +142,7 @@ var PoiSim = PoiSim || {
             c.save();
             c.translate(this.config.armLength, 0);
 
-            var rotateval2 = rotateInTime * this.config[id].speedPoi;
+            var rotateval2 = this.rotateInTime * this.config[id].speedPoi;
             c.rotate(rotateval2);
 
 
@@ -157,6 +174,8 @@ var PoiSim = PoiSim || {
             c.lineTo(this.config.cordLength, 0);
             c.stroke();
 
+            c.restore();
+            c.restore();
             c.restore();
             c.restore();
         }
