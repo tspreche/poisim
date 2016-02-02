@@ -6,6 +6,18 @@ var PoiSim = PoiSim || {
             this.config = {
                 width: 600,
                 height: 600,
+                colorPoi: {
+                    r: 'rgba(255,0,0,1)',
+                    l: 'rgba(0,0,255,1)'
+                },
+                colorHand: {
+                    r: 'rgba(255,125,0,1)',
+                    l: 'rgba(0,125,255,1)'
+                },
+                colorCenter: {
+                    r: 'rgba(0,125,0,1)',
+                    l: 'rgba(0,255,0,1)'
+                },
                 cordLength: $('#cordLength').val(),
                 armLength: $('#armLength').val(),
                 continousPaint: $('#continousPaint').prop('checked'),
@@ -24,7 +36,7 @@ var PoiSim = PoiSim || {
                     l: {
                         isolation: 0,
                         speedHand: -6,
-                        speedPoi: -36
+                        speedPoi: 36
                     }
                 },
                 '6PetalFlower': {
@@ -36,7 +48,7 @@ var PoiSim = PoiSim || {
                     l: {
                         isolation: 0,
                         speedHand: -6,
-                        speedPoi: 36
+                        speedPoi: -36
                     }
                 }
             };
@@ -103,6 +115,9 @@ var PoiSim = PoiSim || {
             }
 
 
+            c.translate(20, 0);
+
+
             if (this.config.secondactive) {
                 this.drawPoi("l");
             }
@@ -119,7 +134,7 @@ var PoiSim = PoiSim || {
         drawPoi: function (id) {
             var c = this.c;
             //green hand or first ring if isolation
-            c.fillStyle = 'rgba(0,255,0,1)';
+            c.fillStyle = this.config.colorCenter[id];
             c.beginPath();
 
             //circle at center
@@ -131,8 +146,34 @@ var PoiSim = PoiSim || {
             var rotateval = this.rotateInTime * this.config[id].speedHand;
 
 
-            c.rotate(rotateval);
-            //c.translate(0, rotateval * 50);
+            //c.rotate(rotateval);
+
+            //var rotatevaldegree = this.rotateInTime*180/Math.PI;
+            var rotatevaldegree = rotateval * 180 / Math.PI;
+
+
+            //rotatevaldegree = Math.floor(rotatevaldegree*1000)/1000;
+            rotatevaldegree = Math.floor(rotatevaldegree);
+
+            if (rotatevaldegree > 0 && rotatevaldegree <= 90) {
+                c.translate(0, rotatevaldegree);
+                //console.log('a',rotatevaldegree);
+            }
+            if (rotatevaldegree > 90 && rotatevaldegree <= 180) {
+                c.translate(90 - rotatevaldegree, 90);
+                //console.log('b',rotatevaldegree);
+            }
+            if (rotatevaldegree > 180 && rotatevaldegree <= 270) {
+                c.translate(-90, 270 - rotatevaldegree);
+                //console.log('c',rotatevaldegree);
+            }
+            if (rotatevaldegree > 270 && rotatevaldegree <= 360) {
+                c.translate(-360 + rotatevaldegree, 0);
+                //console.log('d',rotatevaldegree);
+            }
+
+
+
 
             c.beginPath();
             //gravitiy center
@@ -149,7 +190,7 @@ var PoiSim = PoiSim || {
             c.rotate(Math.PI);
 
             //orange hand
-            c.fillStyle = 'rgba(255,125,0,1)';
+            c.fillStyle = this.config.colorHand[id];
             c.beginPath();
 //            c.arc(this.config[id].isolation, 0, 8, 0, Math.PI * 2, false);
             c.fillRect(this.config[id].isolation - 5, -5, 10, 10);
@@ -162,17 +203,19 @@ var PoiSim = PoiSim || {
             c.rotate(Math.PI);
 
             //red poiball
-            c.fillStyle = 'rgba(255,0,0,1)';
+            c.fillStyle = this.config.colorPoi[id];
             c.beginPath();
             c.arc(this.config.cordLength, 0, 8, 0, Math.PI * 2, false);
             c.fill();
 
 //            if (Math.floor(rotateval2 * 20 * Math.PI) % 2 === 0) {
             c.save();
-            c.beginPath();
-            c.moveTo(0, 0);
-            c.lineTo(this.config.cordLength, 0);
-            c.stroke();
+
+            //if config show cord
+            //c.beginPath();
+            //c.moveTo(0, 0);
+            //c.lineTo(this.config.cordLength, 0);
+            //c.stroke();
 
             c.restore();
             c.restore();

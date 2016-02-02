@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bcc04bbd-41aa-4d7b-8a1f-260a7282d60d" name="Default" comment="use presets and double call poidraw fu&#10;">
+    <list default="true" id="bcc04bbd-41aa-4d7b-8a1f-260a7282d60d" name="Default" comment="double poi works&#10;">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poisim.html" afterPath="$PROJECT_DIR$/poisim.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poisim.js" afterPath="$PROJECT_DIR$/poisim.js" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="poisim.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/poisim.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.709677">
-              <caret line="52" column="7" selection-start-line="52" selection-start-column="7" selection-end-line="52" selection-end-column="7" />
+            <state vertical-scroll-proportion="-1.8358209">
+              <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -42,8 +42,8 @@
       <file leaf-file-name="poisim.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/poisim.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35321102">
-              <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.39473686">
+              <caret line="158" column="31" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -669,7 +669,7 @@
       <workItem from="1453881003972" duration="1204000" />
       <workItem from="1453914348298" duration="5516000" />
       <workItem from="1453920538697" duration="535000" />
-      <workItem from="1453921095796" duration="9768000" />
+      <workItem from="1453921095796" duration="14882000" />
     </task>
     <task id="LOCAL-00001" summary="first commit from idea&#10;">
       <created>1453921519949</created>
@@ -683,11 +683,17 @@
       <option name="project" value="LOCAL" />
       <updated>1453938171328</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="double poi works&#10;">
+      <created>1454058756752</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1454058756752</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41503000" />
+    <option name="totallyTimeSpent" value="46617000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1539" height="1038" extended-state="0" />
@@ -735,7 +741,8 @@
     <MESSAGE value="first commit from idea" />
     <MESSAGE value="first commit from idea&#10;" />
     <MESSAGE value="use presets and double call poidraw fu&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="use presets and double call poidraw fu&#10;" />
+    <MESSAGE value="double poi works&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="double poi works&#10;" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -969,8 +976,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/poisim.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.709677">
-          <caret line="52" column="7" selection-start-line="52" selection-start-column="7" selection-end-line="52" selection-end-column="7" />
+        <state vertical-scroll-proportion="-1.8358209">
+          <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
@@ -979,8 +986,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/poisim.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35321102">
-          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.39473686">
+          <caret line="158" column="31" selection-start-line="158" selection-start-column="31" selection-end-line="158" selection-end-column="31" />
           <folding />
         </state>
       </provider>
