@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bcc04bbd-41aa-4d7b-8a1f-260a7282d60d" name="Default" comment="quadrat 2">
+    <list default="true" id="bcc04bbd-41aa-4d7b-8a1f-260a7282d60d" name="Default" comment="working split version">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poisim.html" afterPath="$PROJECT_DIR$/poisim.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/poisim.js" afterPath="$PROJECT_DIR$/poisim.js" />
     </list>
     <ignored path="poisim.iws" />
@@ -42,8 +41,8 @@
       <file leaf-file-name="poisim.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/poisim.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3325359">
-              <caret line="155" column="74" selection-start-line="155" selection-start-column="74" selection-end-line="155" selection-end-column="74" />
+            <state vertical-scroll-proportion="0.28947368">
+              <caret line="156" column="34" selection-start-line="156" selection-start-column="34" selection-end-line="156" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -670,7 +669,7 @@
       <workItem from="1453914348298" duration="5516000" />
       <workItem from="1453920538697" duration="535000" />
       <workItem from="1453921095796" duration="22460000" />
-      <workItem from="1454698989222" duration="6048000" />
+      <workItem from="1454698989222" duration="6783000" />
     </task>
     <task id="LOCAL-00001" summary="first commit from idea&#10;">
       <created>1453921519949</created>
@@ -702,11 +701,17 @@
       <option name="project" value="LOCAL" />
       <updated>1454699503797</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="working split version">
+      <created>1454705093473</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1454705093473</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="60243000" />
+    <option name="totallyTimeSpent" value="60978000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1539" height="1038" extended-state="0" />
@@ -757,7 +762,8 @@
     <MESSAGE value="double poi works&#10;" />
     <MESSAGE value="quadrat&#10;" />
     <MESSAGE value="quadrat 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="quadrat 2" />
+    <MESSAGE value="working split version" />
+    <option name="LAST_COMMIT_MESSAGE" value="working split version" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1015,8 +1021,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/poisim.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3325359">
-          <caret line="155" column="74" selection-start-line="155" selection-start-column="74" selection-end-line="155" selection-end-column="74" />
+        <state vertical-scroll-proportion="0.28947368">
+          <caret line="156" column="34" selection-start-line="156" selection-start-column="34" selection-end-line="156" selection-end-column="34" />
           <folding />
         </state>
       </provider>

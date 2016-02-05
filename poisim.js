@@ -153,7 +153,7 @@ var PoiSim = PoiSim || {
             c.save();
 
 
-            var rotateval = this.rotateInTime * this.config[id].speedHand;
+            var rotateval = this.rotateInTime * this.config[id].speedHand * 10;
             //c.rotate(rotateval);
             var rotatevaldegree = rotateval * 180 / Math.PI;
             rotatevaldegree = Math.floor(rotatevaldegree);
@@ -172,7 +172,8 @@ var PoiSim = PoiSim || {
 
             var split = 4;
             //var totalarround = 1000;
-            var totalarround = 2 * Math.PI * this.config[id].speedHand;
+            //var totalarround = 2 * Math.PI * this.config[id].speedHand;
+            var totalarround = 2 * Math.PI * 4;
 
             var partwidth = totalarround / split;
             var angel = 2 * Math.PI / split;
@@ -181,9 +182,9 @@ var PoiSim = PoiSim || {
             for (var i = 1; i < split; i++) {
 
                 if (rotateval > i * partwidth) {
-                    c.translate(0, partwidth * 20);
-                    console.log(rotateval);
-                    console.log(i);
+                    c.translate(0, partwidth * this.config[id].speedHand * 10);
+                    //console.log(rotateval);
+                    //console.log(i);
                     c.rotate(angel);
                 }
 
@@ -191,7 +192,7 @@ var PoiSim = PoiSim || {
 
             var rotatevalrest = rotateval % partwidth;
 
-            c.translate(0, rotatevalrest * 20);
+            c.translate(0, rotatevalrest * this.config[id].speedHand * 10);
 
 
 
