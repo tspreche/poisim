@@ -121,7 +121,7 @@ var PoiSim = PoiSim || {
             c.translate(300, 300);
 
             if (this.config.firstactive) {
-                this.drawPoi("r");
+                this.drawHand("r");
             }
 
 
@@ -129,7 +129,7 @@ var PoiSim = PoiSim || {
 
 
             if (this.config.secondactive) {
-                this.drawPoi("l");
+                this.drawHand("l");
             }
 
             c.restore();
@@ -141,7 +141,7 @@ var PoiSim = PoiSim || {
         },
 
         //id is r = right, l = left, aka poi number
-        drawPoi: function (id) {
+        drawHand: function (id) {
             var c = this.c;
             //green hand or first ring if isolation
             c.fillStyle = this.config.colorCenter[id];
@@ -159,7 +159,9 @@ var PoiSim = PoiSim || {
             rotatevaldegree = Math.floor(rotatevaldegree);
 
 
-            c.translate(this.config.armLength, 0);
+            c.translate(this.config.armLength / 2, -this.config.armLength / 2);
+
+            //c.rotate(Math.PI + Math.PI/2); //135degree
 
 
             //c.beginPath();
@@ -168,40 +170,29 @@ var PoiSim = PoiSim || {
             //c.stroke();
 
 
-            if (rotatevaldegree > 0 && rotatevaldegree <= 100) {
-                //if (rotatevaldegree > 0 ) {
-                //c.translate(valBetween(rotatevaldegree,0,90),0);
-                c.translate(0, rotatevaldegree * 2);
-                //console.log('a',rotatevaldegree);
+            var split = 4;
+            //var totalarround = 1000;
+            var totalarround = 2 * Math.PI * this.config[id].speedHand;
+
+            var partwidth = totalarround / split;
+            var angel = 2 * Math.PI / split;
+
+
+            for (var i = 1; i < split; i++) {
+
+                if (rotateval > i * partwidth) {
+                    c.translate(0, partwidth * 20);
+                    console.log(rotateval);
+                    console.log(i);
+                    c.rotate(angel);
+                }
+
             }
-            if (rotatevaldegree > 100 && rotatevaldegree <= 300) {
-                //if (rotatevaldegree > 90 ) {
-                c.translate(100 - rotatevaldegree, 100);
-                //console.log('b',rotatevaldegree);
-                //c.rotate(90/180*Math.PI);
-                //c.translate(valBetween(rotatevaldegree-90,0,90),0);
-            }
-            if (rotatevaldegree > 300 && rotatevaldegree <= 500) {
-                //if (rotatevaldegree > 180 ) {
-                c.translate(-100, 300 - rotatevaldegree);
-                //console.log('c',rotatevaldegree);
-                //c.rotate(90/180*Math.PI);
-                //c.translate(valBetween(rotatevaldegree-180,0,90),0);
-            }
-            if (rotatevaldegree > 500 && rotatevaldegree <= 900) {
-                //if (rotatevaldegree > 270 ) {
-                c.translate(-360 + rotatevaldegree, 0);
-                //console.log('d',rotatevaldegree);
-                //c.rotate(90/180*Math.PI);
-                //c.translate(valBetween(rotatevaldegree-270,0,90),0);
-            }
-            if (rotatevaldegree > 900 && rotatevaldegree <= 1000) {
-                //if (rotatevaldegree > 270 ) {
-                c.translate(100, rotatevaldegree * 2);
-                //console.log('d',rotatevaldegree);
-                //c.rotate(90/180*Math.PI);
-                //c.translate(valBetween(rotatevaldegree-270,0,90),0);
-            }
+
+            var rotatevalrest = rotateval % partwidth;
+
+            c.translate(0, rotatevalrest * 20);
+
 
 
             //c.beginPath();
@@ -218,6 +209,21 @@ var PoiSim = PoiSim || {
             c.save();
 
             //c.translate(this.config.armLength, 0);
+
+
+            for (var i = 1; i < split; i++) {
+
+                if (rotateval > i * partwidth) {
+                    console.log(i);
+                    c.rotate(-angel);
+                }
+
+            }
+
+
+
+
+
 
             //
             var rotateval2 = this.rotateInTime * this.config[id].speedPoi;
