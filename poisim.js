@@ -1,4 +1,6 @@
+"use strict";
 var PoiSim = PoiSim || {
+
 
         stopdraw: false,
 
@@ -25,30 +27,38 @@ var PoiSim = PoiSim || {
                 secondactive: $('#secondactive').prop('checked'),
                 drawReset: $('#drawReset').prop('checked'),
                 preset: $('#preset').val()
+
             };
             this.patternlist = {
-                '6PetalAntispin': {
-                    r: {
-                        isolation: 0,
-                        speedHand: 6,
-                        speedPoi: -36
-                    },
-                    l: {
-                        isolation: 0,
-                        speedHand: -6,
-                        speedPoi: 36
-                    }
-                },
                 '6PetalFlower': {
                     r: {
                         isolation: 0,
                         speedHand: 6,
-                        speedPoi: 36
+                        speedPoi: 36,
+                        split: 3,
+                        splitstart: 0.5
+
                     },
                     l: {
                         isolation: 0,
                         speedHand: -6,
-                        speedPoi: -36
+                        speedPoi: -36,
+                        split: 3,
+                        splitstart: 0.5
+                    }
+                },
+                '6PetalAntispin': {
+                    r: {
+                        isolation: 0,
+                        speedHand: 6,
+                        speedPoi: -36,
+                        split: 6
+                    },
+                    l: {
+                        isolation: 0,
+                        speedHand: -6,
+                        speedPoi: 36,
+                        split: 6
                     }
                 }
             };
@@ -144,49 +154,77 @@ var PoiSim = PoiSim || {
 
 
             var rotateval = this.rotateInTime * this.config[id].speedHand;
-
-
             //c.rotate(rotateval);
-
-            //var rotatevaldegree = this.rotateInTime*180/Math.PI;
             var rotatevaldegree = rotateval * 180 / Math.PI;
-
-
-            //rotatevaldegree = Math.floor(rotatevaldegree*1000)/1000;
             rotatevaldegree = Math.floor(rotatevaldegree);
 
-            if (rotatevaldegree > 0 && rotatevaldegree <= 90) {
-                c.translate(0, rotatevaldegree);
+
+            c.translate(this.config.armLength, 0);
+
+
+            //c.beginPath();
+            //c.moveTo(0, 0);
+            //c.lineTo(this.config.cordLength, 0);
+            //c.stroke();
+
+
+            if (rotatevaldegree > 0 && rotatevaldegree <= 100) {
+                //if (rotatevaldegree > 0 ) {
+                //c.translate(valBetween(rotatevaldegree,0,90),0);
+                c.translate(0, rotatevaldegree * 2);
                 //console.log('a',rotatevaldegree);
             }
-            if (rotatevaldegree > 90 && rotatevaldegree <= 180) {
-                c.translate(90 - rotatevaldegree, 90);
+            if (rotatevaldegree > 100 && rotatevaldegree <= 300) {
+                //if (rotatevaldegree > 90 ) {
+                c.translate(100 - rotatevaldegree, 100);
                 //console.log('b',rotatevaldegree);
+                //c.rotate(90/180*Math.PI);
+                //c.translate(valBetween(rotatevaldegree-90,0,90),0);
             }
-            if (rotatevaldegree > 180 && rotatevaldegree <= 270) {
-                c.translate(-90, 270 - rotatevaldegree);
+            if (rotatevaldegree > 300 && rotatevaldegree <= 500) {
+                //if (rotatevaldegree > 180 ) {
+                c.translate(-100, 300 - rotatevaldegree);
                 //console.log('c',rotatevaldegree);
+                //c.rotate(90/180*Math.PI);
+                //c.translate(valBetween(rotatevaldegree-180,0,90),0);
             }
-            if (rotatevaldegree > 270 && rotatevaldegree <= 360) {
+            if (rotatevaldegree > 500 && rotatevaldegree <= 900) {
+                //if (rotatevaldegree > 270 ) {
                 c.translate(-360 + rotatevaldegree, 0);
                 //console.log('d',rotatevaldegree);
+                //c.rotate(90/180*Math.PI);
+                //c.translate(valBetween(rotatevaldegree-270,0,90),0);
+            }
+            if (rotatevaldegree > 900 && rotatevaldegree <= 1000) {
+                //if (rotatevaldegree > 270 ) {
+                c.translate(100, rotatevaldegree * 2);
+                //console.log('d',rotatevaldegree);
+                //c.rotate(90/180*Math.PI);
+                //c.translate(valBetween(rotatevaldegree-270,0,90),0);
             }
 
 
+            //c.beginPath();
+            //c.moveTo(0, 0);
+            //c.lineTo(this.config.cordLength, 0);
+            //c.stroke();
 
 
             c.beginPath();
             //gravitiy center
-            c.fillRect((this.config.armLength) - 1, -1, 2, 2);
+            c.fillRect(-1, -1, 2, 2);
             c.fill();
 
             c.save();
-            c.translate(this.config.armLength, 0);
 
+            //c.translate(this.config.armLength, 0);
+
+            //
             var rotateval2 = this.rotateInTime * this.config[id].speedPoi;
             c.rotate(rotateval2);
 
 
+            //go to hand from poi
             c.rotate(Math.PI);
 
             //orange hand
@@ -200,6 +238,7 @@ var PoiSim = PoiSim || {
             c.save();
             c.translate(this.config[id].isolation, 0);
 
+            //go back to poi
             c.rotate(Math.PI);
 
             //red poiball
@@ -225,6 +264,9 @@ var PoiSim = PoiSim || {
 
     };
 
+function valBetween(v, min, max) {
+    return (v > min) ? ((v < max) ? v : max) : min;
+}
 
 //document.ready
 $(function () {
