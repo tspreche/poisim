@@ -20,11 +20,10 @@ var PoiSim = PoiSim || {
                     r: 'rgba(0,125,0,1)',
                     l: 'rgba(0,255,0,1)'
                 },
+                speed: $('#speed').val(),
                 cordLength: $('#cordLength').val(),
                 armLength: $('#armLength').val(),
                 continousPaint: $('#continousPaint').prop('checked'),
-                firstactive: $('#firstactive').prop('checked'),
-                secondactive: $('#secondactive').prop('checked'),
                 drawReset: $('#drawReset').prop('checked'),
                 preset: $('#preset').val()
 
@@ -80,12 +79,22 @@ var PoiSim = PoiSim || {
                 this.config[r] = {
                     speedHand: $('#speedHand').val(),
                     speedPoi: $('#speedPoi').val(),
-                    isolation: $('#isolation').val()
+                    isolation: $('#isolation').val(),
+                    split: $('#split').val(),
+                    activeHand: $('#activeHand').prop('checked'),
+                    activePoi: $('#activePoi').prop('checked'),
+                    showArm: $('#showArm').prop('checked'),
+                    showCord: $('#showCord').prop('checked')
                 };
                 this.config[l] = {
                     speedHand: $('#speedHand2').val(),
                     speedPoi: $('#speedPoi2').val(),
-                    isolation: $('#isolation2').val()
+                    isolation: $('#isolation2').val(),
+                    split: $('#split2').val(),
+                    activeHand: $('#activeHand2').prop('checked'),
+                    activePoi: $('#activePoi2').prop('checked'),
+                    showArm: $('#showArm2').prop('checked'),
+                    showCord: $('#showCord2').prop('checked')
                 };
             }
 
@@ -111,6 +120,8 @@ var PoiSim = PoiSim || {
             var diffTime = new Date(time - this.initTime);
             this.rotateInTime = ((2 * Math.PI) / 60) * diffTime.getSeconds() + ((2 * Math.PI) / 60000) * diffTime.getMilliseconds();
 
+            this.rotateInTime = this.rotateInTime * this.config.speed % (2 * Math.PI);
+
             c.save();
 
             //trail
@@ -120,7 +131,7 @@ var PoiSim = PoiSim || {
             //go to center
             c.translate(300, 300);
 
-            if (this.config.firstactive) {
+            if (this.config["r"].activeHand) {
                 this.drawHand("r");
             }
 
@@ -128,7 +139,7 @@ var PoiSim = PoiSim || {
             c.translate(20, 0);
 
 
-            if (this.config.secondactive) {
+            if (this.config["l"].activeHand) {
                 this.drawHand("l");
             }
 
@@ -153,57 +164,48 @@ var PoiSim = PoiSim || {
             c.save();
 
 
-            var rotateval = this.rotateInTime * this.config[id].speedHand * 10;
-            //c.rotate(rotateval);
-            var rotatevaldegree = rotateval * 180 / Math.PI;
-            rotatevaldegree = Math.floor(rotatevaldegree);
+            var rotateval = this.rotateInTime;
 
 
-            c.translate(this.config.armLength / 2, -this.config.armLength / 2);
-
-            //c.rotate(Math.PI + Math.PI/2); //135degree
-
-
-            //c.beginPath();
-            //c.moveTo(0, 0);
-            //c.lineTo(this.config.cordLength, 0);
-            //c.stroke();
+            //hand pattern. normal circle or vieleck/ploygon pattern
+            if (this.config[id].split && this.config[id].split != 0) {
+                //draw rechteck pfad
 
 
-            var split = 4;
-            //var totalarround = 1000;
-            //var totalarround = 2 * Math.PI * this.config[id].speedHand;
-            var totalarround = 2 * Math.PI * 4;
+                c.translate(this.config.armLength / 1.44, -this.config.armLength / 1.44);
 
-            var partwidth = totalarround / split;
-            var angel = 2 * Math.PI / split;
+                var split = this.config[id].split;
+                var totalarround = 2 * Math.PI;
+
+                var partwidth = totalarround / split;
+                var angel = 2 * Math.PI / split;
 
 
-            for (var i = 1; i < split; i++) {
+                for (var i = 1; i < split; i++) {
 
-                if (rotateval > i * partwidth) {
-                    c.translate(0, partwidth * this.config[id].speedHand * 10);
-                    //console.log(rotateval);
-                    //console.log(i);
-                    c.rotate(angel);
+                    if (rotateval > i * partwidth) {
+                        c.translate(0, partwidth * this.config.armLength);
+                        //console.log(rotateval);
+                        //console.log(i);
+                        c.rotate(angel);
+                    }
+
                 }
 
+                var rotatevalrest = rotateval % partwidth;
+
+                c.translate(0, rotatevalrest * this.config.armLength);
+
+            }
+            else {
+                //normal circle rotate
+                c.rotate(rotateval);
+                c.translate(this.config.armLength, 0);
             }
 
-            var rotatevalrest = rotateval % partwidth;
 
-            c.translate(0, rotatevalrest * this.config[id].speedHand * 10);
-
-
-
-            //c.beginPath();
-            //c.moveTo(0, 0);
-            //c.lineTo(this.config.cordLength, 0);
-            //c.stroke();
-
-
-            c.beginPath();
             //gravitiy center
+            c.beginPath();
             c.fillRect(-1, -1, 2, 2);
             c.fill();
 
@@ -212,18 +214,19 @@ var PoiSim = PoiSim || {
             //c.translate(this.config.armLength, 0);
 
 
-            for (var i = 1; i < split; i++) {
+            if (this.config[id].split && this.config[id].split != 0) {
 
-                if (rotateval > i * partwidth) {
-                    console.log(i);
-                    c.rotate(-angel);
+                //rotate back poi the same as hand was rotated forwared, for not jumping poi when hand changes direction
+                for (var j = 1; j < split; j++) {
+
+                    if (rotateval > j * partwidth) {
+                        //console.log(j);
+                        c.rotate(-angel);
+                    }
+
                 }
 
             }
-
-
-
-
 
 
             //
@@ -231,39 +234,69 @@ var PoiSim = PoiSim || {
             c.rotate(rotateval2);
 
 
-            //go to hand from poi
+            //go to hand from poi for isolation
             c.rotate(Math.PI);
-
-            //orange hand
-            c.fillStyle = this.config.colorHand[id];
-            c.beginPath();
-//            c.arc(this.config[id].isolation, 0, 8, 0, Math.PI * 2, false);
-            c.fillRect(this.config[id].isolation - 5, -5, 10, 10);
-            c.fill();
 
 
             c.save();
             c.translate(this.config[id].isolation, 0);
 
+            //orange hand
+            c.fillStyle = this.config.colorHand[id];
+            c.beginPath();
+            c.fillRect(-5, -5, 10, 10);
+            c.fill();
+
+
+            if (this.config[id].showArm) {
+
+                c.save();
+
+                var arm = this.config.armLength;
+                var iso = this.config[id].isolation;
+
+                var x = Math.sqrt(Math.pow(arm, 2) + Math.pow(iso, 2) - 2 * arm * iso * Math.cos(rotateval2));
+                window.console.log(x);
+
+                var ro4 = Math.asin(Math.sin(rotateval2) * iso / x);
+
+                var ro3 = Math.PI - rotateval2 - ro4;
+
+                c.rotate(ro3 + Math.PI);
+                c.beginPath();
+                c.moveTo(0, 0);
+                c.lineTo(x, 0);
+                c.stroke();
+                c.restore();
+
+            }
+
+
             //go back to poi
             c.rotate(Math.PI);
 
-            //red poiball
-            c.fillStyle = this.config.colorPoi[id];
-            c.beginPath();
-            c.arc(this.config.cordLength, 0, 8, 0, Math.PI * 2, false);
-            c.fill();
+            if (this.config[id].activePoi) {
+                //red poiball
+                c.fillStyle = this.config.colorPoi[id];
+                c.beginPath();
+                c.arc(this.config.cordLength, 0, 8, 0, Math.PI * 2, false);
+                c.fill();
 
-//            if (Math.floor(rotateval2 * 20 * Math.PI) % 2 === 0) {
-            c.save();
+                //            if (Math.floor(rotateval2 * 20 * Math.PI) % 2 === 0) {
+                c.save();
 
-            //if config show cord
-            //c.beginPath();
-            //c.moveTo(0, 0);
-            //c.lineTo(this.config.cordLength, 0);
-            //c.stroke();
+                //if config show cord
 
-            c.restore();
+                if (this.config[id].showCord) {
+                    c.beginPath();
+                    c.moveTo(0, 0);
+                    c.lineTo(this.config.cordLength, 0);
+                    c.stroke();
+                }
+
+                c.restore();
+            }
+
             c.restore();
             c.restore();
             c.restore();
