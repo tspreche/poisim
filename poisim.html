@@ -6,7 +6,7 @@
     <script src="jquery.min.js"></script>
     <script src="poisim.js"></script>
 </head>
-<body style="background-color: #666666; color: #EEEEEE">
+<body style="background-color: #000000; color: #EEEEEE">
 
 <canvas id="canvas" width="600" height="600"></canvas>
 
@@ -18,6 +18,7 @@
     <br>
     <select name="preset" class="doDrawReset" id="preset">
         <option value=""></option>
+        <option value="Mercedes">Mercedes</option>
         <option value="Flower 4">Flower 4</option>
         <option value="Windmill">Windmill</option>
         <option value="Fountain">Fountain</option>
@@ -36,7 +37,7 @@
     Arm Length<input id="armLength" class="doDrawReset" type="number" value="100"/>
     Cord Length<input id="cordLength" class="doDrawReset" type="number" value="100"/>
     Shoulder/Distance:<input id="distance" class="doDrawReset" type="number" value="10"/><br>
-    Start Position:<input id="globalStartPosition" class="doDrawReset" type="number" value="45"/><br>
+    Start Position:<input id="globalStartPosition" class="doDrawReset" type="number" value="0"/><br>
     <br>
     <br>
     <table>
@@ -46,8 +47,8 @@
                 Show Hand<input id="showHand" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Poi<input id="activePoi" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Arm <input id="showArm" class="doDrawReset" type="checkbox"/><br>
-                Show Cord <input id="showCord" class="doDrawReset" type="checkbox" checked="checked"/><br>
-                Show GrafityCenter <input id="showG" class="doDrawReset" type="checkbox" checked="checked"/><br>
+                Show Cord <input id="showCord" class="doDrawReset" type="checkbox"/><br>
+                Show GrafityCenter <input id="showG" class="doDrawReset" type="checkbox"/><br>
                 Speed Hand<input id="speedHand" class="doDrawReset" type="number" value="-1"/><br>
                 Speed Poi<input id="speedPoi" class="doDrawReset" type="number" value="3"/><br>
                 Isolation Poi<input id="isolation" class="doDrawReset" type="number" value="30"/><br>
@@ -56,12 +57,12 @@
 
             </td>
             <td>
-                Draw<input id="activeHand2" class="doDrawReset" type="checkbox"/><br>
-                Show Hand<input id="showHand2" class="doDrawReset" type="checkbox"/><br>
-                Show Poi<input id="activePoi2" class="doDrawReset" type="checkbox"/><br>
+                Draw<input id="activeHand2" class="doDrawReset" type="checkbox" checked="checked"/><br>
+                Show Hand<input id="showHand2" class="doDrawReset" type="checkbox" checked="checked"/><br>
+                Show Poi<input id="activePoi2" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Arm <input id="showArm2" class="doDrawReset" type="checkbox"/><br>
-                Show Cord <input id="showCord2" class="doDrawReset" type="checkbox" checked="checked"/><br>
-                Show GrafityCenter <input id="showG2" class="doDrawReset" type="checkbox" checked="checked"/><br>
+                Show Cord <input id="showCord2" class="doDrawReset" type="checkbox"/><br>
+                Show GrafityCenter <input id="showG2" class="doDrawReset" type="checkbox"/><br>
                 Speed Hand<input id="speedHand2" class="doDrawReset" type="number" value="1"/><br>
                 Speed Poi<input id="speedPoi2" class="doDrawReset" type="number" value="-3"/><br>
                 Isolation Poi<input id="isolation2" class="doDrawReset" type="number" value="30"/><br>

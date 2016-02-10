@@ -9,8 +9,10 @@ var PoiSim = PoiSim || {
                 width: 600,
                 height: 600,
                 colorPoi: {
-                    r: 'rgba(255,0,0,1)',
-                    l: 'rgba(0,0,255,1)'
+                    //r: 'rgba(255,0,0,1)',
+                    r: 'rgba(255,255,255,1)',
+                    //l: 'rgba(0,0,255,1)'
+                    l: 'rgba(255,255,255,1)'
                 },
                 colorHand: {
                     r: 'rgba(255,125,0,1)',
@@ -31,6 +33,20 @@ var PoiSim = PoiSim || {
 
             };
             this.patternlist = {
+                'Mercedes': {
+                    r: {
+                        isolation: 0,
+                        speedHand: -1,
+                        speedPoi: -3,
+                        startPosition: 0
+                    },
+                    l: {
+                        isolation: 0,
+                        speedHand: 1,
+                        speedPoi: 0,
+                        startPosition: 0
+                    }
+                },
                 '6PetalFlower': {
                     r: {
                         isolation: 0,
@@ -66,46 +82,48 @@ var PoiSim = PoiSim || {
 
             var r = "r", l = "l";
 
-            if (this.config.preset !== "" && this.patternlist[this.config.preset] !== undefined) {
-                this.config[r] = {
-                    speedHand: this.patternlist[this.config.preset][r].speedHand,
-                    speedPoi: this.patternlist[this.config.preset][r].speedPoi,
-                    isolation: this.patternlist[this.config.preset][r].isolation
-                };
-                this.config[l] = {
-                    speedHand: this.patternlist[this.config.preset][l].speedHand,
-                    speedPoi: this.patternlist[this.config.preset][l].speedPoi,
-                    isolation: this.patternlist[this.config.preset][l].isolation
-                };
-            } else {
-                this.config[r] = {
-                    speedHand: $('#speedHand').val(),
-                    speedPoi: $('#speedPoi').val(),
-                    isolation: $('#isolation').val(),
-                    split: $('#split').val(),
-                    startPosition: $('#startPosition').val() * Math.PI / 180,
-                    activeHand: $('#activeHand').prop('checked'),
-                    showHand: $('#showHand').prop('checked'),
-                    activePoi: $('#activePoi').prop('checked'),
-                    showArm: $('#showArm').prop('checked'),
-                    showG: $('#showG').prop('checked'),
-                    showCord: $('#showCord').prop('checked')
-                };
-                this.config[l] = {
-                    speedHand: $('#speedHand2').val(),
-                    speedPoi: $('#speedPoi2').val(),
-                    isolation: $('#isolation2').val(),
-                    split: $('#split2').val(),
-                    startPosition: $('#startPosition2').val() * Math.PI / 180,
-                    activeHand: $('#activeHand2').prop('checked'),
-                    showHand: $('#showHand2').prop('checked'),
-                    activePoi: $('#activePoi2').prop('checked'),
-                    showArm: $('#showArm2').prop('checked'),
-                    showG: $('#showG2').prop('checked'),
-                    showCord: $('#showCord2').prop('checked')
-                };
-            }
+            this.config[r] = {
+                speedHand: $('#speedHand').val(),
+                speedPoi: $('#speedPoi').val(),
+                isolation: $('#isolation').val(),
+                split: $('#split').val(),
+                startPosition: $('#startPosition').val() * Math.PI / 180,
+                activeHand: $('#activeHand').prop('checked'),
+                showHand: $('#showHand').prop('checked'),
+                activePoi: $('#activePoi').prop('checked'),
+                showArm: $('#showArm').prop('checked'),
+                showG: $('#showG').prop('checked'),
+                showCord: $('#showCord').prop('checked')
+            };
+            this.config[l] = {
+                speedHand: $('#speedHand2').val(),
+                speedPoi: $('#speedPoi2').val(),
+                isolation: $('#isolation2').val(),
+                split: $('#split2').val(),
+                startPosition: $('#startPosition2').val() * Math.PI / 180,
+                activeHand: $('#activeHand2').prop('checked'),
+                showHand: $('#showHand2').prop('checked'),
+                activePoi: $('#activePoi2').prop('checked'),
+                showArm: $('#showArm2').prop('checked'),
+                showG: $('#showG2').prop('checked'),
+                showCord: $('#showCord2').prop('checked')
+            };
 
+            if (this.config.preset !== "" && this.patternlist[this.config.preset] !== undefined) {
+                var pl = this.patternlist,
+                    ps = this.config.preset;
+
+                this.config[r].speedHand = pl[ps][r].speedHand;
+                this.config[r].speedPoi = pl[ps][r].speedPoi;
+                this.config[r].isolation = pl[ps][r].isolation;
+                this.config[r].startPosition = pl[ps][r].startPosition;
+
+                this.config[l].speedHand = pl[ps][l].speedHand;
+                this.config[l].speedPoi = pl[ps][l].speedPoi;
+                this.config[l].isolation = pl[ps][l].isolation;
+                this.config[l].startPosition = pl[ps][l].startPosition;
+
+            }
 
         },
 
@@ -132,9 +150,35 @@ var PoiSim = PoiSim || {
 
             c.save();
 
-            //trail
-            c.fillStyle = 'rgba(102, 102, 102, 0.01)';
-            c.fillRect(0, 0, this.config.width, this.config.height);
+            //trail v1
+            //c.fillStyle = 'rgba(102, 102, 102, 0.02)';
+            //c.fillRect(0, 0, this.config.width, this.config.height);
+
+            //trail v2
+
+            var redFade = 4;
+            var greenFade = 9;
+            var blueFade = 32;
+            var lastImage = c.getImageData(0, 0, 600, 600);
+            var pixelData = lastImage.data;
+            var len = pixelData.length;
+
+            for (var i = 0; i < len; i += 4) {
+                var r = pixelData[i];
+                if (r != 0) {
+
+                    r -= redFade;
+                    var g = pixelData[i + 1] - greenFade;
+                    var b = pixelData[i + 2] - blueFade;
+                    pixelData[i] = (r < 0) ? 0 : r;
+                    pixelData[i + 1] = (g < 0) ? 0 : g;
+                    pixelData[i + 2] = (b < 0) ? 0 : b;
+
+                }
+            }
+            c.putImageData(lastImage, 0, 0);
+
+
 
             //go to center
             c.translate(300, 300);
@@ -146,11 +190,11 @@ var PoiSim = PoiSim || {
             if (this.config["r"].activeHand) {
                 this.drawHand("r");
             }
-
+            c.rotate(-this.config.globalStartPosition);
 
             c.translate(this.config.distance, 0);
 
-
+            c.rotate(this.config.globalStartPosition);
             if (this.config["l"].activeHand) {
                 this.drawHand("l");
             }
@@ -246,7 +290,7 @@ var PoiSim = PoiSim || {
 
 
             //
-            var rotateval2 = this.rotateInTime * this.config[id].speedPoi;
+            var rotateval2 = this.rotateInTime * this.config[id].speedPoi * Math.abs(this.config[id].speedHand);
             c.rotate(rotateval2);
 
 
@@ -263,7 +307,7 @@ var PoiSim = PoiSim || {
                 //orange hand
                 c.fillStyle = this.config.colorHand[id];
                 c.beginPath();
-                c.fillRect(-5, -5, 10, 10);
+                c.fillRect(-3, -3, 6, 6);
                 c.fill();
 
             }
@@ -277,7 +321,6 @@ var PoiSim = PoiSim || {
                 var iso = this.config[id].isolation;
 
                 var x = Math.sqrt(Math.pow(arm, 2) + Math.pow(iso, 2) - 2 * arm * iso * Math.cos(rotateval2));
-                window.console.log(x);
 
                 var ro4 = Math.asin(Math.sin(rotateval2) * iso / x);
 
@@ -365,14 +408,14 @@ $(function () {
 
 /*
  wishlist:
- fade effect
- show poi line schnur on request
- isolations
+ done, fade effect
+ done show poi line schnur on request
+ done isolations
  cateye
- trasitions
- preset of patterns
- sequence of patterns, editor and save, load
- fade effect
+ transitions
+ started, preset of patterns
+ sequence of patterns, editor and save, load -> Meteor
+ firepoi effect
 
  */
 
