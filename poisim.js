@@ -25,6 +25,8 @@ var PoiSim = PoiSim || {
                 armLength: $('#armLength').val(),
                 continousPaint: $('#continousPaint').prop('checked'),
                 drawReset: $('#drawReset').prop('checked'),
+                distance: $('#distance').val(),
+                globalStartPosition: $('#globalStartPosition').val() * Math.PI / 180,
                 preset: $('#preset').val()
 
             };
@@ -81,9 +83,12 @@ var PoiSim = PoiSim || {
                     speedPoi: $('#speedPoi').val(),
                     isolation: $('#isolation').val(),
                     split: $('#split').val(),
+                    startPosition: $('#startPosition').val() * Math.PI / 180,
                     activeHand: $('#activeHand').prop('checked'),
+                    showHand: $('#showHand').prop('checked'),
                     activePoi: $('#activePoi').prop('checked'),
                     showArm: $('#showArm').prop('checked'),
+                    showG: $('#showG').prop('checked'),
                     showCord: $('#showCord').prop('checked')
                 };
                 this.config[l] = {
@@ -91,9 +96,12 @@ var PoiSim = PoiSim || {
                     speedPoi: $('#speedPoi2').val(),
                     isolation: $('#isolation2').val(),
                     split: $('#split2').val(),
+                    startPosition: $('#startPosition2').val() * Math.PI / 180,
                     activeHand: $('#activeHand2').prop('checked'),
+                    showHand: $('#showHand2').prop('checked'),
                     activePoi: $('#activePoi2').prop('checked'),
                     showArm: $('#showArm2').prop('checked'),
+                    showG: $('#showG2').prop('checked'),
                     showCord: $('#showCord2').prop('checked')
                 };
             }
@@ -131,12 +139,16 @@ var PoiSim = PoiSim || {
             //go to center
             c.translate(300, 300);
 
+
+            //start position, inital rotation
+            c.rotate(this.config.globalStartPosition);
+
             if (this.config["r"].activeHand) {
                 this.drawHand("r");
             }
 
 
-            c.translate(20, 0);
+            c.translate(this.config.distance, 0);
 
 
             if (this.config["l"].activeHand) {
@@ -164,8 +176,10 @@ var PoiSim = PoiSim || {
             c.save();
 
 
-            var rotateval = this.rotateInTime;
+            var rotateval = (this.rotateInTime * this.config[id].speedHand) % (2 * Math.PI);
 
+
+            c.rotate(this.config[id].startPosition);
 
             //hand pattern. normal circle or vieleck/ploygon pattern
             if (this.config[id].split && this.config[id].split != 0) {
@@ -204,10 +218,12 @@ var PoiSim = PoiSim || {
             }
 
 
-            //gravitiy center
-            c.beginPath();
-            c.fillRect(-1, -1, 2, 2);
-            c.fill();
+            if (this.config[id].showG) {
+                //gravitiy center
+                c.beginPath();
+                c.fillRect(-1, -1, 2, 2);
+                c.fill();
+            }
 
             c.save();
 
@@ -241,11 +257,16 @@ var PoiSim = PoiSim || {
             c.save();
             c.translate(this.config[id].isolation, 0);
 
-            //orange hand
-            c.fillStyle = this.config.colorHand[id];
-            c.beginPath();
-            c.fillRect(-5, -5, 10, 10);
-            c.fill();
+
+            if (this.config[id].showHand) {
+
+                //orange hand
+                c.fillStyle = this.config.colorHand[id];
+                c.beginPath();
+                c.fillRect(-5, -5, 10, 10);
+                c.fill();
+
+            }
 
 
             if (this.config[id].showArm) {
