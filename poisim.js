@@ -1,18 +1,25 @@
 "use strict";
 var PoiSim = PoiSim || {
 
-
+        count: 0,
         stopdraw: false,
+
+        doInit: function () {
+            this.c = document.getElementById('canvas').getContext('2d');
+            this.stopdraw = false;
+            this.configInit();
+            this.c.fillStyle = 'rgba(0, 0, 0, 1)';
+            this.c.clearRect(0, 0, this.config.width, this.config.height); // clear canvas
+            this.initTime = new Date();
+        },
 
         configInit: function () {
             this.config = {
                 width: 600,
                 height: 600,
                 colorPoi: {
-                    //r: 'rgba(255,0,0,1)',
-                    r: 'rgba(255,255,255,1)',
-                    //l: 'rgba(0,0,255,1)'
-                    l: 'rgba(255,255,255,1)'
+                    r: 'rgba([[R]],[[G]],[[B]],1)',
+                    l: 'rgba([[R]],[[G]],[[B]],1)'
                 },
                 colorHand: {
                     r: 'rgba(255,125,0,1)',
@@ -22,16 +29,38 @@ var PoiSim = PoiSim || {
                     r: 'rgba(0,125,0,1)',
                     l: 'rgba(0,255,0,1)'
                 },
+                trail: $('#trail').val(),
                 speed: $('#speed').val(),
                 cordLength: $('#cordLength').val(),
                 armLength: $('#armLength').val(),
-                continousPaint: $('#continousPaint').prop('checked'),
                 drawReset: $('#drawReset').prop('checked'),
                 distance: $('#distance').val(),
                 globalStartPosition: $('#globalStartPosition').val() * Math.PI / 180,
                 preset: $('#preset').val()
 
             };
+
+            this.config.colorPoi.r = this.config.colorPoi.r.replace("[[R]]", $('#colorPoiR').val());
+            this.config.colorPoi.r = this.config.colorPoi.r.replace("[[G]]", $('#colorPoiG').val());
+            this.config.colorPoi.r = this.config.colorPoi.r.replace("[[B]]", $('#colorPoiB').val());
+            this.config.colorPoi.l = this.config.colorPoi.l.replace("[[R]]", $('#colorPoiR2').val());
+            this.config.colorPoi.l = this.config.colorPoi.l.replace("[[G]]", $('#colorPoiG2').val());
+            this.config.colorPoi.l = this.config.colorPoi.l.replace("[[B]]", $('#colorPoiB2').val());
+
+            if (this.config.trail === "fire") {
+                this.config.colorPoi = {
+                    r: 'rgba(255,255,255,1)',
+                    l: 'rgba(255,255,255,1)'
+                };
+                this.config.colorHand = {
+                    r: 'rgba(30,0,0,1)',
+                    l: 'rgba(30,0,0,1)'
+                };
+                this.config.colorCenter = {
+                    r: 'rgba(30,0,0,1)',
+                    l: 'rgba(30,0,0,1)'
+                };
+            }
             this.patternlist = {
                 'Mercedes': {
                     r: {
@@ -47,35 +76,29 @@ var PoiSim = PoiSim || {
                         startPosition: 0
                     }
                 },
-                '6PetalFlower': {
+                '6PetalAntispin': {
                     r: {
-                        isolation: 0,
-                        speedHand: 6,
-                        speedPoi: 36,
-                        split: 3,
-                        splitstart: 0.5
+                        isolation: 6,
+                        speedHand: 1,
+                        speedPoi: 6
 
                     },
                     l: {
-                        isolation: 0,
-                        speedHand: -6,
-                        speedPoi: -36,
-                        split: 3,
-                        splitstart: 0.5
+                        isolation: 6,
+                        speedHand: -1,
+                        speedPoi: -6
                     }
                 },
-                '6PetalAntispin': {
+                '6PetalFlower': {
                     r: {
-                        isolation: 0,
-                        speedHand: 6,
-                        speedPoi: -36,
-                        split: 6
+                        isolation: 6,
+                        speedHand: -1,
+                        speedPoi: 6
                     },
                     l: {
-                        isolation: 0,
-                        speedHand: -6,
-                        speedPoi: 36,
-                        split: 6
+                        isolation: 6,
+                        speedHand: 1,
+                        speedPoi: -6
                     }
                 }
             };
@@ -93,7 +116,8 @@ var PoiSim = PoiSim || {
                 activePoi: $('#activePoi').prop('checked'),
                 showArm: $('#showArm').prop('checked'),
                 showG: $('#showG').prop('checked'),
-                showCord: $('#showCord').prop('checked')
+                showCord: $('#showCord').prop('checked'),
+                showCenter: $('#showCenter').prop('checked')
             };
             this.config[l] = {
                 speedHand: $('#speedHand2').val(),
@@ -106,7 +130,8 @@ var PoiSim = PoiSim || {
                 activePoi: $('#activePoi2').prop('checked'),
                 showArm: $('#showArm2').prop('checked'),
                 showG: $('#showG2').prop('checked'),
-                showCord: $('#showCord2').prop('checked')
+                showCord: $('#showCord2').prop('checked'),
+                showCenter: $('#showCenter2').prop('checked')
             };
 
             if (this.config.preset !== "" && this.patternlist[this.config.preset] !== undefined) {
@@ -127,15 +152,6 @@ var PoiSim = PoiSim || {
 
         },
 
-        doInit: function () {
-            this.c = document.getElementById('canvas').getContext('2d');
-            this.stopdraw = false;
-            this.configInit();
-            this.c.fillStyle = 'rgba(0, 0, 0, 1)';
-            this.c.clearRect(0, 0, this.config.width, this.config.height); // clear canvas
-            this.initTime = new Date();
-        },
-
         doDraw: function () {
             window.requestAnimationFrame($.proxy(this.draw, this));
         },
@@ -143,6 +159,9 @@ var PoiSim = PoiSim || {
         draw: function () {
             var c = this.c;
             var time = new Date();
+            this.count++;
+
+
             var diffTime = new Date(time - this.initTime);
             this.rotateInTime = ((2 * Math.PI) / 60) * diffTime.getSeconds() + ((2 * Math.PI) / 60000) * diffTime.getMilliseconds();
 
@@ -150,22 +169,79 @@ var PoiSim = PoiSim || {
 
             c.save();
 
-            //trail v1
-            //c.fillStyle = 'rgba(102, 102, 102, 0.02)';
-            //c.fillRect(0, 0, this.config.width, this.config.height);
+            //trail fadetogrey
+            if (this.config.trail == "fadetogrey") {
+                c.fillStyle = 'rgba(102, 102, 102, 0.02)';
+                c.fillRect(0, 0, this.config.width, this.config.height);
+            }
 
-            //trail v2
+            //trail notrail
+            if (this.config.trail == "notrail") {
+                c.clearRect(0, 0, 600, 600);
+                //c.fillStyle = 'rgba(102, 102, 102, 0.02)';
+                //c.fillRect(0, 0, this.config.width, this.config.height);
+            }
 
-            var redFade = 4;
-            var greenFade = 9;
-            var blueFade = 32;
-            var lastImage = c.getImageData(0, 0, 600, 600);
-            var pixelData = lastImage.data;
-            var len = pixelData.length;
+            //doublepaint
+            if (this.config.trail == "doublepaint") {
 
-            for (var i = 0; i < len; i += 4) {
-                var r = pixelData[i];
-                if (r != 0) {
+                //if(this.count % 10 === 0){
+
+                var imgDataTemp = c.getImageData(0, 0, 600, 600);
+                c.clearRect(0, 0, 600, 600);
+                if (this.imgData) {
+                    c.putImageData(this.imgData, 0, 0);
+                }
+                ;
+                this.imgData = imgDataTemp;
+
+                //}
+            }
+
+
+            //trail short trail
+            if (this.config.trail == "shorttrail") {
+                c.fillStyle = 'rgba(102, 102, 102, 0.1)';
+                c.fillRect(0, 0, this.config.width, this.config.height);
+            }
+
+            //trail fire
+            if (this.config.trail == "fire") {
+                var redFade = 4;
+                var greenFade = 9;
+                var blueFade = 32;
+                var lastImage = c.getImageData(0, 0, 600, 600);
+                var pixelData = lastImage.data;
+                var len = pixelData.length;
+
+                for (var i = 0; i < len; i += 4) {
+                    var r = pixelData[i];
+                    if (r != 0) {
+
+                        r -= redFade;
+                        var g = pixelData[i + 1] - greenFade;
+                        var b = pixelData[i + 2] - blueFade;
+                        pixelData[i] = (r < 0) ? 0 : r;
+                        pixelData[i + 1] = (g < 0) ? 0 : g;
+                        pixelData[i + 2] = (b < 0) ? 0 : b;
+
+                    }
+                }
+                c.putImageData(lastImage, 0, 0);
+            }
+
+            //trail to black
+            if (this.config.trail == "trailtoblack") {
+                var redFade = 4;
+                var greenFade = 4;
+                var blueFade = 4;
+                var lastImage = c.getImageData(0, 0, 600, 600);
+                var pixelData = lastImage.data;
+                var len = pixelData.length;
+
+                for (var i = 0; i < len; i += 4) {
+                    var r = pixelData[i];
+                    //if (r != 0) {
 
                     r -= redFade;
                     var g = pixelData[i + 1] - greenFade;
@@ -174,9 +250,12 @@ var PoiSim = PoiSim || {
                     pixelData[i + 1] = (g < 0) ? 0 : g;
                     pixelData[i + 2] = (b < 0) ? 0 : b;
 
+                    //}
                 }
+                c.putImageData(lastImage, 0, 0);
             }
-            c.putImageData(lastImage, 0, 0);
+
+
 
 
 
@@ -201,6 +280,10 @@ var PoiSim = PoiSim || {
 
             c.restore();
 
+            var endtime = new Date();
+            window.console.log(new Date(endtime - time).getMilliseconds());
+
+
             if (!this.stopdraw) {
                 this.doDraw();
             }
@@ -210,56 +293,24 @@ var PoiSim = PoiSim || {
         //id is r = right, l = left, aka poi number
         drawHand: function (id) {
             var c = this.c;
-            //green hand or first ring if isolation
+
             c.fillStyle = this.config.colorCenter[id];
             c.beginPath();
-
             //circle at center
-            c.arc(0, 0, 5, 0, Math.PI * 2, false);
-            c.fill();
+            if (this.config[id].showCenter) {
+                c.arc(0, 0, 5, 0, Math.PI * 2, false);
+                c.fill();
+            }
             c.save();
 
 
             var rotateval = (this.rotateInTime * this.config[id].speedHand) % (2 * Math.PI);
 
-
             c.rotate(this.config[id].startPosition);
 
-            //hand pattern. normal circle or vieleck/ploygon pattern
-            if (this.config[id].split && this.config[id].split != 0) {
-                //draw rechteck pfad
-
-
-                c.translate(this.config.armLength / 1.44, -this.config.armLength / 1.44);
-
-                var split = this.config[id].split;
-                var totalarround = 2 * Math.PI;
-
-                var partwidth = totalarround / split;
-                var angel = 2 * Math.PI / split;
-
-
-                for (var i = 1; i < split; i++) {
-
-                    if (rotateval > i * partwidth) {
-                        c.translate(0, partwidth * this.config.armLength);
-                        //console.log(rotateval);
-                        //console.log(i);
-                        c.rotate(angel);
-                    }
-
-                }
-
-                var rotatevalrest = rotateval % partwidth;
-
-                c.translate(0, rotatevalrest * this.config.armLength);
-
-            }
-            else {
-                //normal circle rotate
-                c.rotate(rotateval);
-                c.translate(this.config.armLength, 0);
-            }
+            //normal circle rotate
+            c.rotate(rotateval);
+            c.translate(this.config.armLength, 0);
 
 
             if (this.config[id].showG) {
@@ -273,22 +324,6 @@ var PoiSim = PoiSim || {
 
             //c.translate(this.config.armLength, 0);
 
-
-            if (this.config[id].split && this.config[id].split != 0) {
-
-                //rotate back poi the same as hand was rotated forwared, for not jumping poi when hand changes direction
-                for (var j = 1; j < split; j++) {
-
-                    if (rotateval > j * partwidth) {
-                        //console.log(j);
-                        c.rotate(-angel);
-                    }
-
-                }
-
-            }
-
-
             //
             var rotateval2 = this.rotateInTime * this.config[id].speedPoi * Math.abs(this.config[id].speedHand);
             c.rotate(rotateval2);
@@ -299,6 +334,7 @@ var PoiSim = PoiSim || {
 
 
             c.save();
+            //c.translate(this.config[id].isolation * Math.cos(rotateval2), 0);
             c.translate(this.config[id].isolation, 0);
 
 
@@ -409,13 +445,19 @@ $(function () {
 /*
  wishlist:
  done, fade effect
- done show poi line schnur on request
+ done show poi line cord on request
  done isolations
  cateye
  transitions
  started, preset of patterns
  sequence of patterns, editor and save, load -> Meteor
- firepoi effect
+ done firepoi effect
+ share it
+ mobile tauglich
+ zurbfoundation
+ metoer mobile app
+
+
 
  */
 
