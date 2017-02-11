@@ -111,6 +111,7 @@ var PoiSim = PoiSim || {
                 isolation: $('#isolation').val(),
                 split: $('#split').val(),
                 startPosition: $('#startPosition').val() * Math.PI / 180,
+                startPositionPoi: $('#startPositionPoi').val() * Math.PI / 180,
                 activeHand: $('#activeHand').prop('checked'),
                 showHand: $('#showHand').prop('checked'),
                 activePoi: $('#activePoi').prop('checked'),
@@ -125,6 +126,7 @@ var PoiSim = PoiSim || {
                 isolation: $('#isolation2').val(),
                 split: $('#split2').val(),
                 startPosition: $('#startPosition2').val() * Math.PI / 180,
+                startPositionPoi: $('#startPositionPoi2').val() * Math.PI / 180,
                 activeHand: $('#activeHand2').prop('checked'),
                 showHand: $('#showHand2').prop('checked'),
                 activePoi: $('#activePoi2').prop('checked'),
@@ -142,11 +144,13 @@ var PoiSim = PoiSim || {
                 this.config[r].speedPoi = pl[ps][r].speedPoi;
                 this.config[r].isolation = pl[ps][r].isolation;
                 this.config[r].startPosition = pl[ps][r].startPosition;
+                //this.config[r].startPositionPoi = pl[ps][r].startPositionPoi;
 
                 this.config[l].speedHand = pl[ps][l].speedHand;
                 this.config[l].speedPoi = pl[ps][l].speedPoi;
                 this.config[l].isolation = pl[ps][l].isolation;
                 this.config[l].startPosition = pl[ps][l].startPosition;
+                //this.config[l].startPositionPoi = pl[ps][l].startPositionPoi;
 
             }
 
@@ -372,6 +376,9 @@ var PoiSim = PoiSim || {
             }
 
 
+            c.rotate(this.config[id].startPositionPoi);
+
+
             //go back to poi
             c.rotate(Math.PI);
 
@@ -457,6 +464,8 @@ $(function () {
  zurbfoundation
  metoer mobile app
 
+ request parameter uebergabe aller settings
+ pattern gallery
 
 
  */

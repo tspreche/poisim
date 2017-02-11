@@ -10,7 +10,7 @@
 
 <canvas id="canvas" width="600" height="600"></canvas>
 
-<div>
+<div style="float: right;;">
     <input type="button" id="start" value="start"/>
     <input type="button" id="stop" value="stop"/>
     <input type="button" id="continue" value="continue"/>
@@ -34,7 +34,7 @@
     <select class="doDrawReset" id="trail">
         <option value=""></option>
         <option value="notrail">notrail</option>
-        <option value="shorttrail">shorttrail</option>
+        <option selected value="shorttrail">shorttrail</option>
         <option value="trailnofade">trailnofade</option>
         <option value="fadetogrey">fadetogrey</option>
         <option value="fire">fire</option>
@@ -46,19 +46,20 @@
     DrawReset<input id="drawReset" class="" type="checkbox" checked="checked"/><br>
     Speed<input id="speed" class="doDrawReset" type="number" value="7"/>
     Arm Length<input id="armLength" class="doDrawReset" type="number" value="100"/>
-    Cord Length<input id="cordLength" class="doDrawReset" type="number" value="100"/>
-    Shoulder/Distance:<input id="distance" class="doDrawReset" type="number" value="10"/><br>
-    Start Position:<input id="globalStartPosition" class="doDrawReset" type="number" value="0"/><br>
+    Cord Length<input id="cordLength" class="doDrawReset" type="number" value="80"/>
+    Shoulder/Distance:<input id="distance" class="doDrawReset" type="number" value="0"/><br>
+    Start Position:<input id="globalStartPosition" class="doDrawReset" type="number" value="68"/><br>
     <br>
     <br>
     <table>
         <tr>
             <td>
                 Draw<input id="activeHand" class="doDrawReset" type="checkbox" checked="checked"/><br>
-                Speed Hand<input id="speedHand" class="doDrawReset" type="number" value="-1"/><br>
-                Speed Poi<input id="speedPoi" class="doDrawReset" type="number" value="3"/><br>
-                Isolation Poi<input id="isolation" class="doDrawReset" type="number" value="30"/><br>
-                Start Position<input id="startPosition" class="doDrawReset" type="number" value="90"/><br>
+                Speed Hand<input id="speedHand" class="doDrawReset" type="number" value="1"/><br>
+                Speed Poi<input id="speedPoi" class="doDrawReset" type="number" value="2"/><br>
+                Isolation Poi<input id="isolation" class="doDrawReset" type="number" value="0"/><br>
+                Start Position<input id="startPosition" class="doDrawReset" type="number" value="0"/><br>
+                Start Position Poi<input id="startPositionPoi" class="doDrawReset" type="number" value="-45"/><br>
                 Show Hand<input id="showHand" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Poi<input id="activePoi" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Arm <input id="showArm" class="doDrawReset" type="checkbox"/><br>
@@ -70,11 +71,12 @@
                 <input id="colorPoiB" class="doDrawReset" type="number" value="0"/><br>
             </td>
             <td>
-                Draw<input id="activeHand2" class="doDrawReset" type="checkbox"/><br>
+                Draw<input id="activeHand2" class="doDrawReset" type="checkbox"  checked="checked"/><br>
                 Speed Hand<input id="speedHand2" class="doDrawReset" type="number" value="1"/><br>
-                Speed Poi<input id="speedPoi2" class="doDrawReset" type="number" value="-3"/><br>
-                Isolation Poi<input id="isolation2" class="doDrawReset" type="number" value="30"/><br>
-                Start Position<input id="startPosition2" class="doDrawReset" type="number" value="-90"/><br>
+                Speed Poi<input id="speedPoi2" class="doDrawReset" type="number" value="-4"/><br>
+                Isolation Poi<input id="isolation2" class="doDrawReset" type="number" value="0"/><br>
+                Start Position<input id="startPosition2" class="doDrawReset" type="number" value="0"/><br>
+                Start Position Poi2<input id="startPositionPoi2" class="doDrawReset" type="number" value="-90"/><br>
                 Show Hand<input id="showHand2" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Poi<input id="activePoi2" class="doDrawReset" type="checkbox" checked="checked"/><br>
                 Show Arm <input id="showArm2" class="doDrawReset" type="checkbox"/><br>
