@@ -156,6 +156,23 @@ var PoiSim = PoiSim || {
 
         },
 
+        doPreset: function(datamap){
+
+            var r = "r", l = "l";
+            this.config[r].speedHand = datamap.speedHand;
+            this.config[r].speedPoi = datamap.speedPoi;
+            this.config[r].isolation = datamap.isolation;
+            this.config[r].startPosition = datamap.startPosition;
+            this.config[r].startPositionPoi = datamap.startPositionPoi;
+
+            this.config[l].speedHand = datamap.speedHand2;
+            this.config[l].speedPoi = datamap.speedPoi2;
+            this.config[l].isolation = datamap.isolation2;
+            this.config[l].startPosition = datamap.startPosition2;
+            this.config[l].startPositionPoi = datamap.startPositionPoi2;
+
+        },
+
         doDraw: function () {
             window.requestAnimationFrame($.proxy(this.draw, this));
         },
@@ -285,7 +302,7 @@ var PoiSim = PoiSim || {
             c.restore();
 
             var endtime = new Date();
-            window.console.log(new Date(endtime - time).getMilliseconds());
+            //window.console.log(new Date(endtime - time).getMilliseconds());
 
 
             if (!this.stopdraw) {
@@ -445,6 +462,19 @@ $(function () {
             ps.configInit();
         }
     });
+
+
+    //read url parameter
+    var uriloc = new URI(window.document.location.href.toString());
+
+    // get data map:
+    var datamap = uriloc.search(true); // returns { foo: "bar", hello : ["world", "mars"] }
+
+    console.log(datamap);
+
+    ps.doPreset(datamap);
+
+
 
 });
 
